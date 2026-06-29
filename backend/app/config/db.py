@@ -10,14 +10,6 @@ from app.models.action import UseAction
 
 load_dotenv()
 
-# ── Motor 3.7+ compatibility shim ──────────────────────────────────────
-# Motor 3.7+ does not forward ``append_metadata`` from pymongo's
-# MongoClient to the Motor wrapper.  Because AsyncIOMotorClient.__getattr__
-# treats any unknown attribute name as a database reference,
-#   client.append_metadata
-# returns a MotorDatabase named ``"append_metadata"`` instead of the real
-# method.  Beanie 2.1.0 calls this method during ``init_beanie``, so we
-# expose it explicitly here to bypass the ``__getattr__`` fallback.
 def _motor_append_metadata(
     self: AsyncIOMotorClient, driver_info: DriverInfo
 ) -> None:

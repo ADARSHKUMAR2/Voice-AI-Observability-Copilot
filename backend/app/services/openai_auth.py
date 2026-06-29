@@ -6,7 +6,6 @@ from azure.ai.inference.aio import ChatCompletionsClient
 from azure.core.credentials import AzureKeyCredential
 from dotenv import load_dotenv
 
-# Ensure environment tokens are active
 load_dotenv()
 
 class KPIMatch(BaseModel):

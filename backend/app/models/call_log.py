@@ -3,7 +3,6 @@ from pydantic import BaseModel
 from beanie import Document
 from datetime import datetime
 
-# Make incoming fields optional for debugging
 class VoiceTranscriptPayload(BaseModel):
     locationId: Optional[str] = None
     agentId: Optional[str] = None

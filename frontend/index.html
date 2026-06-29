@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Voice AI Observability Copilot</title>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-slate-950 text-slate-100 min-h-screen p-6 font-sans antialiased">
+    <div id="app" class="max-w-7xl mx-auto space-y-6">
+        <header class="flex justify-between items-center border-b border-slate-800 pb-4">
+            <div>
+                <h1 class="text-xl font-black bg-gradient-to-r from-indigo-400 to-cyan-400 bg-clip-text text-transparent">🤖 Voice AI Observability Copilot</h1>
+                <p class="text-xs text-slate-400">Automated Validation Flywheel Pipeline</p>
+            </div>
+            <div class="text-xs bg-slate-900 border border-slate-800 px-3 py-1 rounded-full text-emerald-400 flex items-center gap-2">
+                <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span> App Integration Active
+            </div>
+        </header>
+
+        <main class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+            <section class="lg:col-span-5 bg-slate-900 rounded-xl border border-slate-800 p-4 space-y-3">
+                <h2 class="text-xs font-bold text-slate-400 uppercase tracking-wider">Monitored Call Streams</h2>
+                <div class="space-y-2 max-h-[500px] overflow-y-auto">
+                    <div v-for="call in calls" @click="selectedCall = call"
+                         :class="['p-3 rounded-lg border text-left cursor-pointer transition flex items-center justify-between gap-3', selectedCall?.id === call.id ? 'bg-slate-800 border-indigo-500' : 'bg-slate-950/40 border-slate-800 hover:bg-slate-800/40']">
+                        <div class="truncate">
+                            <p class="text-xs font-bold text-slate-200 truncate">ID: {{ call.id }}</p>
+                            <p class="text-[10px] text-slate-500 truncate">Agent: {{ call.agent }}</p>
+                        </div>
+                        <span :class="['text-[9px] font-bold px-2 py-0.5 rounded-full uppercase', call.status === 'Pass' ? 'bg-emerald-500/10 text-emerald-400' : 'bg-rose-500/10 text-rose-400']">
+                            {{ call.status }}
+                        </span>
+                    </div>
+                </div>
+            </section>
+
+            <section class="lg:col-span-7 bg-slate-900 rounded-xl border border-slate-800 p-5 flex flex-col min-h-[400px]">
+                <div v-if="selectedCall" class="space-y-5 flex-1">
+                    <div class="flex justify-between items-center border-b border-slate-800 pb-2">
+                        <h3 class="font-bold text-slate-200">🔍 Core Performance Grader</h3>
+                        <span class="text-xs font-mono bg-slate-950 px-2 py-0.5 rounded text-indigo-400 border border-slate-800">Score: {{ selectedCall.score }}/100</span>
+                    </div>
+
+                    <div v-if="selectedCall.status === 'Fail'" class="bg-rose-500/10 border border-rose-500/20 text-rose-400 p-3 rounded-lg text-xs">
+                        <strong>⚠️ Human Intervention / Training Required</strong>
+                        <p class="text-slate-300 mt-0.5">The agent broke optimization boundaries or failed script requirements.</p>
+                    </div>
+
+                    <div class="space-y-1">
+                        <h4 class="text-[11px] font-bold uppercase tracking-wider text-slate-400">Raw Call Transcript</h4>
+                        <p class="text-xs text-slate-300 bg-slate-950 p-3 rounded-lg border border-slate-800 leading-relaxed italic">"{{ selectedCall.transcript }}"</p>
+                    </div>
+
+                    <div class="space-y-1">
+                        <h4 class="text-[11px] font-bold uppercase tracking-wider text-slate-400">Identified Deviations & Failures</h4>
+                        <ul class="text-xs text-amber-400 list-disc list-inside bg-slate-950 p-3 rounded-lg border border-slate-800 space-y-1">
+                            <li v-for="fail in selectedCall.deviations"><span class="text-slate-300">{{ fail }}</span></li>
+                        </ul>
+                    </div>
+
+                    <div class="space-y-1">
+                        <h4 class="text-[11px] font-bold uppercase tracking-wider text-slate-400">🎯 Immediate Prompt Engineering Action Items</h4>
+                        <p class="text-xs text-slate-200 bg-slate-950 p-3 rounded-lg border border-indigo-900/40 leading-relaxed font-mono">{{ selectedCall.recommendation }}</p>
+                    </div>
+                </div>
+                <div v-else class="m-auto text-center text-slate-500 text-xs">
+                    Select an inbound call trace stream file to inspect compliance scores.
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script>
+        const { createApp } = Vue
+
+        async function fetchCallLogs() {
+            try {
+                const response = await fetch('/api/dashboard/data');
+                if (!response.ok) throw new Error('Failed to fetch call logs');
+                return await response.json();
+            } catch (err) {
+                console.error('Error fetching call logs:', err);
+                return [];
+            }
+        }
+
+        createApp({
+            data() {
+                return {
+                    selectedCall: null,
+                    calls: []
+                }
+            },
+            async mounted() {
+                this.calls = await fetchCallLogs();
+                if (this.calls.length > 0) {
+                    this.selectedCall = this.calls[0];
+                }
+            }
+        }).mount('#app')
+    </script>
+</body>
+</html>

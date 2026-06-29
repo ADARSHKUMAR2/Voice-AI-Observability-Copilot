@@ -33,11 +33,9 @@ async def audit_voice_transcript(payload: VoiceTranscriptPayload) -> CallLogDocu
         model="gpt-4o",
         temperature=0.2
     )
-    
-    # Extract response string and strip leading/trailing whitespace
+       
     raw_content = response.choices[0].message.content.strip()
     
-    # 🛡️ DEFENSIVE GUARD: Strip markdown code block wrapping if present
     if raw_content.startswith("```"):
         lines = raw_content.splitlines()
         if lines[0].startswith("```"):
@@ -46,7 +44,6 @@ async def audit_voice_transcript(payload: VoiceTranscriptPayload) -> CallLogDocu
             lines = lines[:-1]
         raw_content = "\n".join(lines).strip()
     
-    # Safely unpack the sanitized string token into a structured dictionary
     analysis = json.loads(raw_content)
     
     await client.close()
