@@ -6,7 +6,6 @@ readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
     "aiohttp>=3.14.1",
-    "azure-ai-inference>=1.0.0b9",
     "beanie>=2.1.0",
     "cryptography>=49.0.0",
     "fastapi>=0.138.1",
@@ -14,6 +13,7 @@ dependencies = [
     "motor>=3.7.1",
     "openai>=2.44.0",
     "pydantic>=2.13.4",
+    "pydantic-ai>=2.0.0",
     "pytest>=9.1.1",
     "pytest-asyncio>=1.4.0",
     "python-dotenv>=1.2.2",
