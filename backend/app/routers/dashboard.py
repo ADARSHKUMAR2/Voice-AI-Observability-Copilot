@@ -17,12 +17,19 @@ async def serve_dashboard():
 async def get_dashboard_data():
     """API endpoint that returns call log data as JSON for the frontend."""
     raw_logs = await CallLogDocument.find_all().to_list()
-    formatted_data = []
+    
+    # Deduplicate by callId: keep only the most recent entry for each unique callId
+    unique_logs = {}
     for log in raw_logs:
-        # 🌟 FIX: Force string into uniform uppercase and clean up leading/trailing spaces
-        raw_status = str(log.status).strip().upper()
+        key = log.callId if log.callId else "Sandbox_Simulation"
+        # If we haven't seen this callId, or this entry is newer, keep it
+        if key not in unique_logs or (log.createdAt and unique_logs[key].createdAt and log.createdAt > unique_logs[key].createdAt):
+            unique_logs[key] = log
+    
+    formatted_data = []
+    for log in unique_logs.values():
         
-        # Consolidate positive status outcomes into standard "PASS"
+        raw_status = str(log.status).strip().upper()
         normalized_status = "PASS" if raw_status in ["PASS", "SUCCESS", "SUCCESSFUL"] else "FAIL"
         
         formatted_data.append({
