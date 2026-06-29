@@ -13,3 +13,12 @@ def setup_cors_middleware(app: FastAPI) -> None:
         allow_methods=["*"],
         allow_headers=["*"],
     )
+
+    origins = [
+        "http://localhost:5000",
+        "http://localhost:5001",
+        "https://app.gohighlevel.com",
+        
+        "https://mango-sea-01234567f.azurestaticapps.net", 
+        "https://yourcustomdomain.com"                     
+    ]

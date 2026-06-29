@@ -74,9 +74,12 @@
     <script>
         const { createApp } = Vue;
 
-        const BACKEND_URL = "https://january-laundry-devotion.ngrok-free.dev/api/dashboard/data";
-
-        async function fetchCallLogs() {
+        // const BACKEND_URL = "https://january-laundry-devotion.ngrok-free.dev/api/dashboard/data";
+        const BACKEND_URL = window.location.hostname === "localhost" 
+            ? "http://localhost:5001/api/dashboard/data" 
+            : "https://voice-ai-observability-backend.azurewebsites.net/api/dashboard/data";
+        
+            async function fetchCallLogs() {
             try {
                 const response = await fetch(BACKEND_URL);
                 if (!response.ok) throw new Error('Failed to fetch call logs across network tunnel');

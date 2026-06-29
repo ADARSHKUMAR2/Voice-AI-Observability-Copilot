@@ -1,0 +1,64 @@
+name: 🚀 Voice AI Copilot Decoupled Azure Pipeline
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  # 🐍 JOB 1: Test & Deploy FastAPI Backend
+  backend-pipeline:
+    name: 🧠 Ingestion API Engine
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: ⚡ Install uv
+        uses: astral-sh/setup-uv@v3
+        with:
+          version: "latest"
+          enable-cache: true
+
+      - name: Set Up Python 3.12
+        run: uv python install 3.12
+
+      - name: 🧪 Run Ingestion Schemas Verification
+        env:
+          MONGO_URI: mongodb://localhost:27017/voice_copilot_test
+          GITHUB_TOKEN: ${{ secrets.ENV_GITHUB_TOKEN }}
+        run: |
+          # Only runs verification scripts if an active test folder is present
+          if [ -d "backend/app/tests" ]; then uv run pytest; f
+
+      - name: Log in to Azure
+        if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+        uses: azure/login@v2
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+      - name: 🏢 Push Backend to Azure App Service
+        if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+        uses: azure/webapps-deploy@v3
+        with:
+          app-name: 'voice-ai-observability-backend' # Your exact App Service Resource Name
+          package: './backend'
+
+  # 🎨 JOB 2: Deploy Vue 3 Frontend
+  frontend-pipeline:
+    name: 🖼️ Edge UI Layout Dashboard
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: 🌐 Push Static Assets to Azure Static Web Apps
+        uses: Azure/static-web-apps-deploy@v1
+        with:
+          azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN }}
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          action: "upload"
+          app_location: "./frontend" # Where your index.html file lives
+          api_location: ""           # Leave empty since our API is handled via App Service
+          output_location: ""        # Leave empty for uncompiled vanilla HTML/JS projects
