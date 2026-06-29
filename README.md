@@ -289,6 +289,60 @@ voice-ai-observability-copilot/
    # Response: {"status": "healthy"}
    ```
 
+6. **(Optional) Serve the standalone frontend**
+
+   The `frontend/index.html` is a standalone Vue 3 dashboard that can be served independently (e.g., during local UI development):
+
+   ```bash
+   # From the project root, serve the frontend on port 8080
+   npx serve frontend/ -p 8080
+   ```
+
+   Or using Python's built-in HTTP server:
+   ```bash
+   python3 -m http.server 8080 -d frontend/
+   ```
+
+   The dashboard will be available at `http://localhost:8080`.
+
+7. **Expose the backend via ngrok (for GHL webhook testing)**
+
+   [ngrok](https://ngrok.com/) creates a public HTTPS URL that tunnels requests to your local server. This is required for HighLevel to send webhook events to your local development environment.
+
+   **Install ngrok** (if not already installed):
+   ```bash
+   brew install ngrok
+   ```
+
+   **Authenticate ngrok** (required for persistent tunnels):
+   1. Sign up at [ngrok.com](https://ngrok.com/) and get your authtoken from the dashboard.
+   2. Authenticate:
+      ```bash
+      ngrok config add-authtoken YOUR_AUTH_TOKEN
+      ```
+
+   **Start the tunnel** (in a separate terminal while the backend is running):
+   ```bash
+   ngrok http 5000
+   ```
+
+   This will output a forwarding URL like:
+   ```
+   Forwarding    https://abc123.ngrok.io -> http://localhost:5000
+   ```
+
+   **Configure GHL webhook:**
+   - In your HighLevel sub-account, go to **Settings → Voice → Webhooks**
+   - Set the webhook URL to your ngrok URL + `/api/webhook/voice-completed`
+     ```
+     https://abc123.ngrok.io/api/webhook/voice-completed
+     ```
+   - Save the configuration
+
+   Now every call completed event from GHL will be forwarded to your local backend server via the ngrok tunnel.
+
+   > **Note:** The free ngrok plan generates a new URL each time you restart ngrok. For persistent URLs, upgrade to a paid plan. The ngrok URL can also be used to access the embedded dashboard at `https://abc123.ngrok.io/dashboard`.
+
 ---
 
 ## 7. API Reference

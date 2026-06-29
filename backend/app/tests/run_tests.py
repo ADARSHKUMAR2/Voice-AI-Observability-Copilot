@@ -65,6 +65,52 @@ TEST_SCENARIOS = {
             "Customer: No, I'm good. "
             "Agent: Excellent. Thank you for reaching out to support, have an amazing day! Goodbye."
         )
+    },
+    
+    "6_appointment_booking_pass": {
+        "locationId": "India_Dev",
+        "agentId": "Jessica_Auditor",
+        "callId": "booking_pass_992",
+        "transcript": (
+            "Agent: Thanks for calling Apex Chiropractic! Are you looking to book an adjustment today? "
+            "Customer: Yes, please. I'm a new patient, my back has been killing me all week. "
+            "Agent: I'm sorry to hear that, let's get you taken care of. I have an opening tomorrow, Tuesday at 2:00 PM, or Wednesday morning at 10:00 AM. Do either of those work? "
+            "Customer: Tuesday at 2:00 PM works perfectly fine. "
+            "Agent: Great! I've locked in Tuesday at 2:00 PM for you. I just sent a confirmation text to this phone number with our intake form link. Is there anything else I can help you with? "
+            "Customer: No, that's all. Thank you so much. "
+            "Agent: You're very welcome! Have a wonderful day and we'll see you tomorrow. Goodbye."
+        )
+    },
+
+    "7_objection_handling_pass": {
+        "locationId": "India_Dev",
+        "agentId": "Jessica_Auditor",
+        "callId": "objection_pass_883",
+        "transcript": (
+            "Agent: Hey Alex, just following up on the SaaS demo we did yesterday. Ready to get your team onboarded? "
+            "Customer: Look, I like the platform, but $500 a month is just way too expensive for our current budget right now. "
+            "Agent: I completely understand, Alex. $500 is a real investment. But let's look at the numbers from your trial—automating those 15 manual database hours saves your team roughly $1,200 a week in developer time. The system essentially pays for itself in the first 4 days. "
+            "Customer: Hmm. When you put it that way, the math makes sense. But do I have to sign a yearly contract? "
+            "Agent: Not at all. We can start you on a month-to-month plan today so you can measure the raw performance yourself before locking anything in. Should we set up the billing profile? "
+            "Customer: Yeah, let's do the month-to-month. Let's do it. "
+            "Agent: Perfect, let's get you set up. Have an amazing day! Goodbye."
+        )
+    },
+
+    "8_support_deescalation_pass": {
+        "locationId": "India_Dev",
+        "agentId": "Jessica_Auditor",
+        "callId": "deescalation_pass_441",
+        "transcript": (
+            "Customer: This is ridiculous! Your app crashed right in the middle of my client presentation and I lost my entire unsaved slide deck! I want a refund immediately! "
+            "Agent: I am incredibly sorry to hear that, and I completely understand why you're furious. Losing client work during a presentation is completely unacceptable, and I would be just as upset if I were in your shoes. Let me see how I can make this right immediately. "
+            "Customer: Fine. But can I even get my data back or is it gone forever? "
+            "Agent: Good news—our cloud engine automatically saves a local backup state every 60 seconds. I am looking at your account right now, and I can see your cached deck snapshot labeled Presentation_Backup. I've just forced it to sync back to your dashboard live. "
+            "Customer: Wait, really? Let me check... Oh thank goodness, it's back. Wow, okay. Thank you. "
+            "Agent: You are so welcome. I'm also applying a one-month service credit to your account for the trouble. Is there anything else I can double-check to protect your work today? "
+            "Customer: No, that's amazing. I appreciate you fixing this so fast. "
+            "Agent: Excellent. Thank you for reaching out to support, have a phenomenal rest of your day! Goodbye."
+        )
     }
 }
 
