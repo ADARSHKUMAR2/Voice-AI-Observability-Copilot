@@ -1,0 +1,25 @@
+name: Azure Backend App Service CI/CD
+
+on:
+  push:
+    branches:
+      - Azure_CI_CD 
+
+jobs:
+  deploy_backend:
+    name: Package and Push FastAPI Ingestion Engine
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Log in to Microsoft Azure
+        uses: azure/login@v2
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+      - name: Deploy API Package to Azure App Service
+        uses: azure/webapps-deploy@v3
+        with:
+          app-name: 'voice-ai-observability-backend' # 🌟 Swap this for your exact Azure App Service resource name
+          package: './backend'
