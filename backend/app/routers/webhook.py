@@ -12,5 +12,9 @@ async def handle_incoming_ghl_transcript(payload: VoiceTranscriptPayload):
     print("🚨 END DEBUG\n")
     
     audit_record = await audit_voice_transcript(payload)
-    await audit_record.insert()
-    return {"status": "processed", "record_id": str(audit_record.id)}
+    # await audit_record.insert()
+    return {
+        "status": "processed", 
+        "record_id": audit_record.get("document_id"),
+        "audited_by": audit_record.get("audited_by", "Emergency Fallback Node")
+    }
