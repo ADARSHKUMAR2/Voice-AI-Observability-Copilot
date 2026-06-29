@@ -1183,12 +1183,6 @@ Please ensure your code follows the existing patterns:
 
 ---
 
-## 14. License
-
-Distributed under the MIT License. See `LICENSE` for more information.
-
----
-
 ## Acknowledgments
 
 - Built for the [HighLevel](https://www.gohighlevel.com/) Voice AI platform
