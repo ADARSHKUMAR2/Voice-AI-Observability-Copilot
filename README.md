@@ -23,7 +23,6 @@
 11. [File-by-File Deep Dive](#11-file-by-file-deep-dive)
 12. [Roadmap](#12-roadmap)
 13. [Contributing](#13-contributing)
-14. [License](#14-license)
 
 ---
 
