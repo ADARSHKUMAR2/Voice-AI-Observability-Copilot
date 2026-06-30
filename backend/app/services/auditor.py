@@ -29,7 +29,6 @@ async def audit_voice_transcript(payload: VoiceTranscriptPayload) -> dict:
     analysis = None
     successfully_audited = False
 
-    # 🚀 Cascade loop fallback engine
     for model_name in MODEL_POOL:
         try:
             logger.info(f"📡 Attempting compliance audit using model: {model_name}")
@@ -56,9 +55,8 @@ async def audit_voice_transcript(payload: VoiceTranscriptPayload) -> dict:
 
         except Exception as model_err:
             logger.warning(f"⚠️ Model {model_name} rate-limited or unavailable. Swapping to fallback node. Details: {str(model_err)}")
-            continue # Continue down the array pool to the next model string
+            continue 
 
-    # 🚨 HARD FALLBACK SAFETYS: Executed only if ALL pool models throw rate errors
     if not successfully_audited or not analysis:
         logger.critical("❌ All models in the pool have exhausted their active execution quotas. Running emergency fallback payload.")
         analysis = AuditResult(
@@ -79,10 +77,10 @@ async def audit_voice_transcript(payload: VoiceTranscriptPayload) -> dict:
             deviations=analysis.deviations if analysis.deviations else [],
             recommendation=analysis.recommendation,
         )
-        # Commit safely to MongoDB Atlas
+        
         await audit_record.insert()
         
-        # 🌟 FIX: Return a clean, safe dictionary instead of the raw database object
+        
         return {
             "status": "success",
             "document_id": str(audit_record.id),
@@ -91,7 +89,7 @@ async def audit_voice_transcript(payload: VoiceTranscriptPayload) -> dict:
         
     except Exception as db_err:
         logger.error(f"❌ Database Insertion Crash: {str(db_err)}")
-        # If it's a duplicate key error, return a clean error message instead of crashing
+        
         return {
             "status": "error",
             "message": f"Database write aborted: {str(db_err)}"
