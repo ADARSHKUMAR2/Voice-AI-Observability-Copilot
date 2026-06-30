@@ -22,8 +22,6 @@
 9. [LLM Auditing Pipeline](#9-llm-auditing-pipeline)
 10. [Project Structure](#10-project-structure)
 11. [Roadmap](#11-roadmap)
-12. [Contributing](#12-contributing)
-13. [License](#13-license)
 
 ---
 
